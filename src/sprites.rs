@@ -9,7 +9,7 @@ use bevy::ecs::{archetype::Archetypes, component::Components};
 use bevy::ecs::prelude::{Commands, Res};
 use crate::bitmaps::*;
 
-#[derive(Component, Debug)]
+#[derive(Component)]
 pub struct KeyMover {
     pub is_movable: bool
 }

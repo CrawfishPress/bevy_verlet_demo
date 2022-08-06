@@ -55,8 +55,22 @@ fn setup_sprites(mut commands: Commands,
     commands // Center Pixel for Calibration
         .spawn_bundle(MaterialMesh2dBundle {
             transform: Transform::from_translation(Vec3::new(-475.0, 0.0, 5.0)),
-            mesh: meshes.add(shape::RegularPolygon::new(4.0, 6).into()).into(),
+            mesh: meshes.add(shape::Circle::new(2.0).into()).into(),
             material: materials.add(ColorMaterial::from(Color::BLACK)),
+            ..default()});
+
+    commands // And this is my other Center Pixel for Calibration
+        .spawn_bundle(MaterialMesh2dBundle {
+            transform: Transform::from_translation(Vec3::new(-900.0, -425.0, 6.0)),
+            mesh: meshes.add(shape::Circle::new(2.0).into()).into(),
+            material: materials.add(ColorMaterial::from(Color::BLACK)),
+            ..default()});
+
+    commands // Square for Calibration
+        .spawn_bundle(MaterialMesh2dBundle {
+            transform: Transform::from_translation(Vec3::new(-900.0, -425.0, 4.0)),
+            mesh: meshes.add(shape::RegularPolygon::new(20.0, 4).into()).into(),
+            material: materials.add(ColorMaterial::from(Color::WHITE)),
             ..default()});
 
     commands  // Moving Tunnel

@@ -37,6 +37,8 @@ pub fn add_a_circle(mut commands: Commands,
             mesh: meshes.add(shape::Circle::new(20.0).into()).into(),
             material: materials.add(ColorMaterial::from(Color::WHITE)),
             ..default()})
-        .insert(OneCircle);
-    println!("added a circle somewhere []");
+        .insert(OneCircle)
+        .insert(KeyMover {is_movable: true});
+    let foo = Vec3::new(-475.0, 0.0, 1.0);
+    println!("added a circle somewhere. I think it's at {}", foo);
 }

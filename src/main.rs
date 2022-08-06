@@ -1,6 +1,6 @@
 /*
 Basic example of Verlet equations-of-motion, in Rust/Bevy
- */
+*/
 
 use bevy::{prelude::*, window::WindowMode, sprite::MaterialMesh2dBundle};
 use bevy::ecs::prelude::{Commands, Res};
@@ -35,6 +35,7 @@ fn main() {
         .insert_resource(SpritesMovable { is_active: true })
         .add_plugins(DefaultPlugins)
         .add_startup_system(setup_sprites)
+        .add_startup_system(add_a_circle)
         .add_system(bevy::window::close_on_esc)
         .add_system(do_movement_input)
         .run();

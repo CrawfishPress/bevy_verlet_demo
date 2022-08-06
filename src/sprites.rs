@@ -1,3 +1,8 @@
+/*
+Technically, the Sprites are in bitmaps.rs, but this file contains
+the motions-functions.
+*/
+
 use bevy::{prelude::*};
 use bevy::asset::{AssetServer, Handle, Asset};
 use bevy::ecs::{archetype::Archetypes, component::Components};
@@ -12,9 +17,6 @@ pub struct KeyMover {
 pub struct SpritesMovable {
     pub is_active: bool
 }
-
-#[derive(Component)]
-pub struct BackgroundMap;
 
 pub fn do_movement_input(keyboard_input: Res<Input<KeyCode>>,
                          mut tunnel_pos: Query<(&mut Transform, &mut KeyMover)>,

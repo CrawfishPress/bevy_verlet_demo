@@ -56,13 +56,15 @@ pub fn solve_for_verlet(mut balls_qry: Query<(Entity, &mut VerletData, &mut Tran
 ){
     for (entity_id, mut verlet_data, mut pos_vec) in &mut balls_qry {
         // println!("balls-ahoy: {:?}: {:?}", entity_id, verlet_data);
-        apply_gravity(&mut verlet_data, pos_vec);
+        apply_gravity(verlet_data, pos_vec);
     }
 }
 
-pub fn apply_gravity(verlet_data: &Mut<'_, VerletData>, mut pos_vec: Mut<'_, bevy::prelude::Transform, >)
+pub fn apply_gravity(mut verlet_data: Mut<'_, VerletData>, mut pos_vec: Mut<'_, bevy::prelude::Transform, >)
 {
     // println!("balls-data: {:?},\n\t {:?}",  verlet_data, pos_vec);
     // println!();
-    pos_vec.translation.y -= 1.0;
+    verlet_data.base_gravity.y -= 0.1;
+    pos_vec.translation.y += verlet_data.base_gravity.y;
+    // println!("gravity: {}", verlet_data.base_gravity.y);
 }

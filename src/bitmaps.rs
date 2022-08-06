@@ -37,7 +37,9 @@ pub fn add_a_circle(mut commands: Commands,
 ){
     let circle_vec3 = Vec3::new(-475.0, 0.0, 1.0);
     let verlet_data = VerletData {pos_current: Vec2 { x: -475.0, y: 0.0 },
-                                  pos_old: Vec2 { x: -475.0, y: 0.0 } };
+                                  pos_old: Vec2 { x: -475.0, y: 0.0 },
+                                  base_gravity: Vec2 { x: 0.0, y: -0.1 },
+    };
 
     commands // I'll have to Circle back...
         .spawn_bundle(MaterialMesh2dBundle {

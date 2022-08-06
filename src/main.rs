@@ -7,12 +7,14 @@ use bevy::ecs::prelude::{Commands, Res};
 
 mod bitmaps;
 mod sprites;
+mod verlet;
+
 use bitmaps::*;
 use sprites::*;
 
 const HEIGHT: f32 = 950.0;
 const WIDTH: f32 = 1870.0;
-const ASPECT_RATIO: f32 = WIDTH / HEIGHT;
+// const ASPECT_RATIO: f32 = WIDTH / HEIGHT;
 const BACKGROUND: Color = Color::rgb(0.50, 0.50, 1.0); // Purple
 
 const BLOCK_SIZE: f32 = 50.0;
@@ -38,6 +40,7 @@ fn main() {
         .add_startup_system(add_a_circle)
         .add_system(bevy::window::close_on_esc)
         .add_system(do_movement_input)
+        .add_system(solve_for_verlet)
         .run();
     println!("this is a test of the Bevy Engine - alas, this line is never reached, due to a bug");
 }

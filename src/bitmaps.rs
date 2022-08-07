@@ -30,7 +30,7 @@ pub fn add_background(commands: &mut Commands,
             texture: asset_server.load(some_bitmap),
             ..default()})
         .insert(BackgroundMap);
-    println!("added background [{}]", some_bitmap);
+    // println!("added background [{}]", some_bitmap);
 }
 
 pub fn add_many_circles(mut commands: Commands,
@@ -67,5 +67,5 @@ pub fn add_a_circle(commands: &mut Commands,
         .insert(OneCircle)
         .insert(KeyMover {is_movable: true})
         .insert(verlet_data);
-    println!("added a circle somewhere. I think it's at {}", circle_vec3);
+    // println!("added a circle somewhere. I think it's at {}", circle_vec3);
 }

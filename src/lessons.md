@@ -1,7 +1,7 @@
 ## Bevy Queries and smart-pointers
 
 Note: the Bevy Query, returns a *smart-pointer* - figuring out how
-to unwrap this:
+to unwrap it, was tricky. (The Rust forums were very helpful...)
 
     Mut<'_, bevy::prelude::Transform>
 
@@ -14,8 +14,6 @@ to unwrap this:
     
     pub fn apply_gravity(mut verlet_data: Mut<'_, VerletData>, 
                          mut entity_pos: Mut<'_, bevy::prelude::Transform>) {}
-
-was tricky.
 
 And *then*, I needed to unwrap it, so I could take a reference...
  - https://bevy-cheatbook.github.io/pitfalls/split-borrows.html

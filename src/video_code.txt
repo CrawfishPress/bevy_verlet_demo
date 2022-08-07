@@ -1,0 +1,103 @@
+struct VerletObject
+{
+    Vec2 position_current;
+    Vec2 position_old;
+    Vec2 acceleration;
+
+
+    void UpdatePosition(float dt) {
+        const Vec2 velocity = position_current - position_old
+
+        // Save current position
+        position_old = position_current;
+
+        // Perform Verlet integration
+        position_current = position_current + velocity + acceleration * dt * dt;
+
+        // Reset acceleration
+        acceleration = {};
+        }
+
+    void accelerate(Vec2 acc) {
+        acceleration += acc;
+    }
+}
+
+struct Solver
+{
+    Vec2 gravity = {0.0f, 1000.0f};
+    void update(float dt) {
+        applyGravity();
+        applyConstraint();
+        solveCollisions();
+        updatePosition(dt);
+    }
+
+    void updatePosition(float dt) {
+        core::foreach<Verletobject>([dt](VerletObject& obj) {
+            obj.updatePosition(dt);});
+    }
+
+    void applyGravity() {
+        core::foreach<Verletobject>([this](VerletObject& obj) {
+            obj.accelerate(gravity);});
+    }
+
+    void applyConstraint() {
+        const Vec2 position{800.0f, 450.0f};
+        const float radius = 400.0f;
+
+        core::foreach<Verletobject>([&](VerletObject& obj) {
+            const Vec2 to_obj = obj.position_current - position;
+            const float dist = MathVec2::length(to_obj);
+
+            // 50 is the default radius
+            if (dist > radius - 50.0f) {
+                const Vec2 n = to_obj / dist;
+                obj.position_current = position + n * (radius - 50.0f);
+            }});
+    }
+}
+
+void solveCollisions() {
+    const uint32_t object_count = core::getCount<VerletObject>();
+    auto& object_container = core::getEntityDataContainer<VerletObject>().data;
+
+    for (uint32_t i(0); i<object_count; ++i) {
+        VerletObject& object_1 = object_container[i];
+
+        for (uint32_t k(i+1); k<object_count; ++k) {
+
+            VerletObject& object_2 = object_container[k];
+            const Vec2 collision_axis = object_1.position_current - object_2.position_current
+            const float dist = MathVec::length(collision_axis);
+
+            if (dist < 100.0f) {
+                const Vec2 n = collision_axis / dist;
+                const float delta = 100.0f - dist;
+                object_1.position_current += 0.5f * delta * n;
+                object_2.position_current -= 0.5f * delta * n;
+            }
+        }
+    }
+}
+
+struct Link {
+    civ::Ref<VerletObject> object_1;
+    civ::Ref<VerletObject> object_2;
+    float target_dist;
+
+    void apply() {
+        VerletObject& obj_1 = *object_1;
+        VerletObject& obj_2 = *object_2;
+
+        const Vec2 axis = obj_1.position_current - obj_2.position_current;
+        const float dist = MathVec::length(axis)
+        const Vec2 n = axis / dist;
+        const float delta = target_dist - dist;
+
+        obj_1.position_current += 0.5f * delta * n;
+        obj_2.position_current -= 0.5f * delta * n;
+    }
+}
+

@@ -2,6 +2,7 @@ use bevy::prelude::Color;
 use bevy::math::Vec2;
 
 pub(crate) const BALL_RADIUS: f32 = 25.0;
+pub(crate) const DAMP_FACTOR: f32 = 0.9;
 
 pub(crate) struct BallPit {
     pub pit_center: Vec2,

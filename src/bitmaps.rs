@@ -49,6 +49,7 @@ pub fn add_many_circles(mut commands: Commands,
     add_a_circle(&mut commands, &mut meshes, &mut materials, 200.0, 200.0);
 
     balls_left.total_balls -= 1;
+    println!("balls added: {}", BALLS_MAX - balls_left.total_balls);
     if balls_left.total_balls <= 0 {
         timer.0.pause();
     }

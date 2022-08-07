@@ -2,7 +2,7 @@ use bevy::prelude::Color;
 use bevy::math::Vec2;
 
 pub const CIRCLE_DELAY: f32 = 0.25;
-pub const BALLS_MAX: i32 = 200;
+pub const BALLS_MAX: i32 = 100;
 pub const BALL_RADIUS: f32 = 10.0;
 pub const DAMP_FACTOR: f32 = 0.5;
 

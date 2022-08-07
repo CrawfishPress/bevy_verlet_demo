@@ -4,6 +4,7 @@ Basic example of Verlet equations-of-motion, in Rust/Bevy
 
 use bevy::{prelude::*, window::WindowMode, sprite::MaterialMesh2dBundle};
 use bevy::ecs::prelude::{Commands, Res};
+use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 
 mod bitmaps;
 mod sprites;
@@ -33,6 +34,8 @@ fn main() {
         .insert_resource(CircleTimer(Timer::from_seconds(CIRCLE_DELAY, true)))
         .insert_resource(BallsInGame { total_balls: BALLS_MAX })
         .add_plugins(DefaultPlugins)
+        .add_plugin(LogDiagnosticsPlugin::default())
+        .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .add_startup_system(setup_sprites)
         .add_system(add_many_circles)
         .add_system(bevy::window::close_on_esc)

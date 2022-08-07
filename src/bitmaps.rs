@@ -12,13 +12,15 @@ use bevy::ecs::prelude::{Commands, Res};
 use crate::sprites::*;
 use crate::verlet::*;
 
-use crate::data::{BALL_RADIUS, MY_PIT};
+use crate::data::*;
 
 #[derive(Component)]
 pub struct BackgroundMap;
 
 #[derive(Component, Debug)]
 pub struct OneCircle;
+
+pub struct CircleTimer(pub Timer);
 
 pub fn add_background(commands: &mut Commands,
                       asset_server: &Res<AssetServer>,
@@ -36,10 +38,23 @@ pub fn add_background(commands: &mut Commands,
 pub fn add_many_circles(mut commands: Commands,
                         mut meshes: ResMut<Assets<Mesh>>,
                         mut materials: ResMut<Assets<ColorMaterial>>,
+                        mut timer: ResMut<CircleTimer>,
+                        time: Res<Time>,
+                        mut balls_left: ResMut<BallsInGame>,
 ){
-    add_a_circle(&mut commands, &mut meshes, &mut materials, -100.0, 0.0);
-    add_a_circle(&mut commands, &mut meshes, &mut materials, 200.0, 0.0);
-    add_a_circle(&mut commands, &mut meshes, &mut materials, 300.0, 200.0);
+    if timer.0.paused() { return; }
+    timer.0.tick(time.delta());
+    if ! timer.0.finished() { return; }
+
+    add_a_circle(&mut commands, &mut meshes, &mut materials, 200.0, 200.0);
+
+    balls_left.total_balls -= 1;
+    if balls_left.total_balls <= 0 {
+        timer.0.pause();
+    }
+
+    //add_a_circle(&mut commands, &mut meshes, &mut materials, 200.0, 0.0);
+    //add_a_circle(&mut commands, &mut meshes, &mut materials, 300.0, 200.0);
 }
 
 pub fn add_a_circle(commands: &mut Commands,

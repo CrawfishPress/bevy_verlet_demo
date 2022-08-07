@@ -1,8 +1,15 @@
 use bevy::prelude::Color;
 use bevy::math::Vec2;
 
-pub(crate) const BALL_RADIUS: f32 = 25.0;
-pub(crate) const DAMP_FACTOR: f32 = 0.9;
+pub const CIRCLE_DELAY: f32 = 0.25;
+pub const BALLS_MAX: i32 = 200;
+pub const BALL_RADIUS: f32 = 10.0;
+pub const DAMP_FACTOR: f32 = 0.5;
+
+#[derive(PartialEq, PartialOrd)]
+pub struct BallsInGame {
+    pub total_balls: i32,
+}
 
 pub(crate) struct BallPit {
     pub pit_center: Vec2,

@@ -33,12 +33,22 @@ pub fn add_background(commands: &mut Commands,
     println!("added background [{}]", some_bitmap);
 }
 
-pub fn add_a_circle(mut commands: Commands,
-                    mut meshes: ResMut<Assets<Mesh>>,
-                    mut materials: ResMut<Assets<ColorMaterial>>,
+pub fn add_many_circles(mut commands: Commands,
+                        mut meshes: ResMut<Assets<Mesh>>,
+                        mut materials: ResMut<Assets<ColorMaterial>>,
 ){
-    let circle_vec3 = Vec3::new(MY_PIT.pit_center.x, MY_PIT.pit_center.y, 1.0);
-    let circle_vec2 = Vec2::new(MY_PIT.pit_center.x, MY_PIT.pit_center.y);
+    add_a_circle(&mut commands, &mut meshes, &mut materials, -100.0);
+    add_a_circle(&mut commands, &mut meshes, &mut materials, 200.0);
+    add_a_circle(&mut commands, &mut meshes, &mut materials, 300.0);
+}
+
+pub fn add_a_circle(commands: &mut Commands,
+                    meshes: &mut ResMut<Assets<Mesh>>,
+                    materials: &mut ResMut<Assets<ColorMaterial>>,
+                    x_offset: f32,
+){
+    let circle_vec3 = Vec3::new(MY_PIT.pit_center.x + x_offset, MY_PIT.pit_center.y, 1.0);
+    let circle_vec2 = Vec2::new(MY_PIT.pit_center.x + x_offset, MY_PIT.pit_center.y);
 
     let verlet_data = VerletData {pos_current: circle_vec2,
                                   pos_old: circle_vec2,

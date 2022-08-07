@@ -21,13 +21,25 @@ pub struct VerletData {
 
 pub fn solve_for_verlet(mut balls_qry: Query<(Entity, &mut VerletData, &mut Transform)>,)
 {
-    // for (entity_id, mut verlet_data, mut entity_pos) in &mut balls_qry {  // Same as below
     for (_entity_id, mut verlet_data, mut entity_pos) in balls_qry.iter_mut() {
         // apply_gravity(verlet_data, entity_pos);  // No hope that this would ever work. See lessons.md
         apply_gravity(&mut verlet_data, &mut *entity_pos);
+    }
+
+    for (_entity_id, mut verlet_data, mut entity_pos) in balls_qry.iter_mut() {
         apply_constraints(&mut verlet_data, &mut *entity_pos);
+    }
+
+    //for (entity_id, mut verlet_data, mut entity_pos) in balls_qry.iter_mut() {
+    //    for (entity_id2, mut verlet_data2, mut entity_pos2) in balls_qry.iter_mut() {
+    //        println!("E1 = {:?}, E2 = {:?}", entity_id, entity_id2)
+    //    }
+    //}
+
+    for (_entity_id, mut verlet_data, mut entity_pos) in balls_qry.iter_mut() {
         update_position(&mut verlet_data, &mut *entity_pos);
     }
+
 }
 
 // pub fn apply_gravity(mut verlet_data: Mut<'_, VerletData>, mut entity_pos: Mut<'_, bevy::prelude::Transform>)

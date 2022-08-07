@@ -32,7 +32,7 @@ fn main() {
         .insert_resource(SpritesMovable { is_active: true })
         .add_plugins(DefaultPlugins)
         .add_startup_system(setup_sprites)
-        .add_startup_system(add_a_circle)
+        .add_startup_system(add_many_circles)
         .add_system(bevy::window::close_on_esc)
         .add_system(do_movement_input)
         .add_system(solve_for_verlet)

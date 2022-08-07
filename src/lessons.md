@@ -34,3 +34,11 @@ handling, run a loop within a loop, through the objects:
 If you know anything about Rust, you know it doesn't like mutable-borrowing more than once,
 so this is right out. (I *did* expect it before doing it, just wanted to put some code in the
 collision-handler, and see the error-message).
+
+The solution (well, there may be others), is to "flatten" the query into a Vector of
+mutable objects, then loop through that.
+
+    let mut balls: Vec<(Entity, Mut<'_, VerletData>, Mut<'_, Transform>)> = balls_qry.iter_mut().collect();
+    for (cur_index, (cur_entity, some_verlet, some_transform)) in balls.iter_mut().enumerate() {
+        println!("entity[{}]: {:?} = {:?}", cur_index, cur_entity, some_verlet);
+    }

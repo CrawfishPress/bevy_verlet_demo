@@ -2,18 +2,12 @@
 Technically, the Sprites are in bitmaps.rs, this file just contains
 the motions-functions.
 
-Note that the Bevy Query, returns a smart-pointer - figuring out how
-to unwrap that
-    Mut<'_, bevy::prelude::Transform, >
-was tricky.
 */
 
 use bevy::{prelude::*};
 use bevy::ecs::prelude::{Res};
 
-use crate::verlet::*;
-
-fn print_type_of<T>(_: &T) {print!("{}", std::any::type_name::<T>())} // Unstable.
+// fn print_type_of<T>(_: &T) {print!("{}", std::any::type_name::<T>())} // Unstable.
 
 #[derive(Component)]
 pub struct KeyMover {
@@ -50,21 +44,4 @@ pub fn do_movement_input(keyboard_input: Res<Input<KeyCode>>,
             tunnel_dir.translation.x += 7.5
         }
     }
-}
-
-pub fn solve_for_verlet(mut balls_qry: Query<(Entity, &mut VerletData, &mut Transform)>,
-){
-    for (entity_id, mut verlet_data, mut pos_vec) in &mut balls_qry {
-        // println!("balls-ahoy: {:?}: {:?}", entity_id, verlet_data);
-        apply_gravity(verlet_data, pos_vec);
-    }
-}
-
-pub fn apply_gravity(mut verlet_data: Mut<'_, VerletData>, mut pos_vec: Mut<'_, bevy::prelude::Transform, >)
-{
-    // println!("balls-data: {:?},\n\t {:?}",  verlet_data, pos_vec);
-    // println!();
-    verlet_data.base_gravity.y -= 0.1;
-    pos_vec.translation.y += verlet_data.base_gravity.y;
-    // println!("gravity: {}", verlet_data.base_gravity.y);
 }

@@ -8,17 +8,12 @@ use bevy::ecs::prelude::{Commands, Res};
 mod bitmaps;
 mod sprites;
 mod verlet;
+mod data;
 
 use bitmaps::*;
 use sprites::*;
-
-const HEIGHT: f32 = 950.0;
-const WIDTH: f32 = 1870.0;
-// const ASPECT_RATIO: f32 = WIDTH / HEIGHT;
-const BACKGROUND: Color = Color::rgb(0.50, 0.50, 1.0); // Purple
-
-const BLOCK_SIZE: f32 = 50.0;
-const PADDLE_COLOR: Color = Color::rgba(0.3, 0.1, 0.9, 0.9); // Green
+use verlet::*;
+use data::*;
 
 fn main() {
     App::new()

@@ -6,15 +6,20 @@ use bevy::{prelude::*, window::WindowMode, sprite::MaterialMesh2dBundle};
 use bevy::ecs::prelude::{Commands, Res};
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 
+#[allow(unused_imports)]
+use bevy_egui::{egui, EguiContext, EguiPlugin};
+
 mod bitmaps;
 mod sprites;
 mod verlet;
 mod data;
+mod my_egui;
 
 use bitmaps::*;
 use sprites::*;
 use verlet::*;
 use data::*;
+use my_egui::*;
 
 fn main() {
     App::new()
@@ -33,10 +38,15 @@ fn main() {
         .insert_resource(SpritesMovable { is_active: true })
         .insert_resource(CircleTimer(Timer::from_seconds(CIRCLE_DELAY, true)))
         .insert_resource(BallsInGame { total_balls: BALLS_MAX })
+        .insert_resource(GuiData { some_name: "".to_string(), my_value: 0, my_other_value: 0.0 })
+
         .add_plugins(DefaultPlugins)
+        .add_plugin(EguiPlugin)
         .add_plugin(LogDiagnosticsPlugin::default())
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
+
         .add_startup_system(setup_sprites)
+        .add_system(do_ui_setup)
         .add_system(add_many_circles)
         .add_system(bevy::window::close_on_esc)
         .add_system(do_movement_input)

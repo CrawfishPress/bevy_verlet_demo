@@ -35,10 +35,12 @@ fn main() {
             ..default()
         })
         .insert_resource(ClearColor(BACKGROUND))
+
+        .insert_resource(GuiData { some_name: "".to_string(), total_balls: 0, slider_value: 0 })
         .insert_resource(SpritesMovable { is_active: true })
         .insert_resource(CircleTimer(Timer::from_seconds(CIRCLE_DELAY, true)))
-        .insert_resource(BallsInGame { total_balls: BALLS_MAX })
-        .insert_resource(GuiData { some_name: "".to_string(), my_value: 0, my_other_value: 0.0 })
+        .insert_resource(BallsInGame { balls_added: 0, total_balls: BALLS_MAX })
+        .insert_resource(PitActive { is_paused: true })
 
         .add_plugins(DefaultPlugins)
         .add_plugin(EguiPlugin)

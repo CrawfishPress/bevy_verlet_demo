@@ -11,11 +11,8 @@ use bevy::ecs::prelude::{Commands, Res};
 
 use crate::sprites::*;
 use crate::verlet::*;
-
+use crate::my_egui::*;
 use crate::data::*;
-
-#[derive(Component)]
-pub struct BackgroundMap;
 
 #[derive(Component, Debug)]
 pub struct OneCircle;
@@ -30,32 +27,32 @@ pub fn add_background(commands: &mut Commands,
         .spawn_bundle(SpriteBundle {
             transform: Transform::from_xyz(0.0, 0.0, 0.0),
             texture: asset_server.load(some_bitmap),
-            ..default()})
-        .insert(BackgroundMap);
-    // println!("added background [{}]", some_bitmap);
+            ..default()});
 }
 
-pub fn add_many_circles(mut commands: Commands,
+pub fn add_many_circles(time: Res<Time>,
+                        action_check: Res<PitActive>,
+                        mut commands: Commands,
                         mut meshes: ResMut<Assets<Mesh>>,
                         mut materials: ResMut<Assets<ColorMaterial>>,
                         mut timer: ResMut<CircleTimer>,
-                        time: Res<Time>,
                         mut balls_left: ResMut<BallsInGame>,
+                        mut random_data: ResMut<GuiData>,
 ){
+    if action_check.is_paused { return; }
     if timer.0.paused() { return; }
     timer.0.tick(time.delta());
     if ! timer.0.finished() { return; }
 
+    // TODO: make the x/y offset, random
     add_a_circle(&mut commands, &mut meshes, &mut materials, 200.0, 200.0);
 
-    balls_left.total_balls -= 1;
-    println!("balls added: {}", BALLS_MAX - balls_left.total_balls);
-    if balls_left.total_balls <= 0 {
+    balls_left.balls_added += 1;
+    random_data.total_balls = balls_left.balls_added;
+
+    if balls_left.balls_added >= random_data.slider_value {
         timer.0.pause();
     }
-
-    //add_a_circle(&mut commands, &mut meshes, &mut materials, 200.0, 0.0);
-    //add_a_circle(&mut commands, &mut meshes, &mut materials, 300.0, 200.0);
 }
 
 pub fn add_a_circle(commands: &mut Commands,
@@ -83,5 +80,4 @@ pub fn add_a_circle(commands: &mut Commands,
         .insert(OneCircle)
         .insert(KeyMover {is_movable: true})
         .insert(verlet_data);
-    // println!("added a circle somewhere. I think it's at {}", circle_vec3);
 }

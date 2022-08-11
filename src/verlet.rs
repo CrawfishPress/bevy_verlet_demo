@@ -7,6 +7,7 @@ use bevy::{prelude::*};
 use bevy::math::Vec2;
 
 use crate::data::{BALL_RADIUS, MY_PIT, DAMP_FACTOR};
+use crate::PitActive;
 
 #[allow(dead_code)]
 fn print_type_of<T>(_: &T) {print!("{}", std::any::type_name::<T>())} // Unstable.
@@ -20,8 +21,11 @@ pub struct VerletData {
     pub delta_t: f32,
 }
 
-pub fn solve_for_verlet(mut balls_qry: Query<(Entity, &mut VerletData, &mut Transform)>,
+pub fn solve_for_verlet(action_check: Res<PitActive>,
+                        mut balls_qry: Query<(Entity, &mut VerletData, &mut Transform)>,
 ){
+    if action_check.is_paused { return; }
+
     for (_entity_id, mut verlet_data, mut entity_pos) in balls_qry.iter_mut() {
         // apply_gravity(verlet_data, entity_pos);  // No hope that this would ever work. See lessons.md
         apply_gravity(&mut verlet_data, &mut *entity_pos);

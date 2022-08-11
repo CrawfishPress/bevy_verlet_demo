@@ -6,19 +6,11 @@ use bevy::prelude::*;
 #[allow(unused_imports)]
 use bevy_egui::{egui, EguiContext, EguiPlugin};
 use egui::{Color32, Label};
-use crate::SpritesMovable;
-
-// GUI Resource
-#[derive(Debug, Default)]
-pub struct GuiData {
-    pub some_name: String,
-    pub my_value: i32,
-    pub my_other_value: f64,
-}
+use crate::{PitActive, SpritesMovable, GuiData};
 
 pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
+                   mut action_check: ResMut<PitActive>,
                    mut random_data: ResMut<GuiData>,
-                   mut move_active: ResMut<SpritesMovable>,
 ) {
     let my_frame = egui::containers::Frame {
         outer_margin: Default::default(),
@@ -32,21 +24,23 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
     };
 
     let some_label = Label::new("I think you can also click the box to enter a number "); // Testing...
+    let ball_count = format!("Total balls added: {}", random_data.total_balls);
+    let my_slider = egui::Slider::new(&mut random_data.slider_value, 0..=500);
 
     egui::SidePanel::right("top panel?")
         .frame(my_frame)
-        .min_width(800.0)
+        .min_width(700.0)
         // .resizable(true)  // Only works if there's a resizable element inside?
         .show(egui_context.ctx_mut(), |ui| {
             ui.heading("This is a Header that does nothing useful");
             ui.horizontal(|ui| {
                 ui.label("balls: ");
-                ui.add(egui::Slider::new(&mut random_data.my_other_value, 0.0..=500.0));
+                ui.add(my_slider);
                 ui.add(some_label);
             });
             if ui.button("Click the magic-button").clicked() {
-                random_data.my_value += 1;
-                move_active.is_active = !move_active.is_active;
+                action_check.is_paused = !action_check.is_paused;
             }
+            ui.label(ball_count);
         });
 }

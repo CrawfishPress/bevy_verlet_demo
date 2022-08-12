@@ -11,7 +11,6 @@ use bevy::ecs::prelude::{Commands, Res};
 
 use crate::sprites::*;
 use crate::verlet::*;
-use crate::my_egui::*;
 use crate::data::*;
 
 #[derive(Component, Debug)]
@@ -45,12 +44,13 @@ pub fn add_many_circles(time: Res<Time>,
     if ! timer.0.finished() { return; }
 
     // TODO: make the x/y offset, random
-    add_a_circle(&mut commands, &mut meshes, &mut materials, 200.0, 200.0);
+    let ball_radius = random_data.radius_slider_value;
+    add_a_circle(&mut commands, &mut meshes, &mut materials, ball_radius, 200.0, 200.0);
 
     balls_left.balls_added += 1;
     random_data.total_balls = balls_left.balls_added;
 
-    if balls_left.balls_added >= random_data.slider_value {
+    if balls_left.balls_added >= random_data.ball_slider_value {
         timer.0.pause();
     }
 }
@@ -58,6 +58,7 @@ pub fn add_many_circles(time: Res<Time>,
 pub fn add_a_circle(commands: &mut Commands,
                     meshes: &mut ResMut<Assets<Mesh>>,
                     materials: &mut ResMut<Assets<ColorMaterial>>,
+                    ball_radius: f32,
                     x_offset: f32,
                     y_offset: f32,
 ){
@@ -74,7 +75,7 @@ pub fn add_a_circle(commands: &mut Commands,
     commands // I'll have to Circle back...
         .spawn_bundle(MaterialMesh2dBundle {
             transform: Transform::from_translation(circle_vec3),
-            mesh: meshes.add(shape::Circle::new(BALL_RADIUS).into()).into(),
+            mesh: meshes.add(shape::Circle::new(ball_radius).into()).into(),
             material: materials.add(ColorMaterial::from(Color::WHITE)),
             ..default()})
         .insert(OneCircle)

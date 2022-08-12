@@ -6,7 +6,7 @@ use bevy::prelude::*;
 #[allow(unused_imports)]
 use bevy_egui::{egui, EguiContext, EguiPlugin};
 use egui::{Color32, Label};
-use crate::{PitActive, SpritesMovable, GuiData};
+use crate::{PitActive, GuiData};
 
 pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
                    mut action_check: ResMut<PitActive>,
@@ -25,7 +25,11 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
 
     let some_label = Label::new("I think you can also click the box to enter a number "); // Testing...
     let ball_count = format!("Total balls added: {}", random_data.total_balls);
-    let my_slider = egui::Slider::new(&mut random_data.slider_value, 0..=500);
+
+    // I can't believe this worked. See lessons.md
+    let foo = &mut *random_data;
+    let radius_slider = egui::Slider::new(&mut foo.radius_slider_value, 10.0..=50.0).step_by(5.0);
+    let ball_slider = egui::Slider::new(&mut foo.ball_slider_value, 0..=500);
 
     egui::SidePanel::right("top panel?")
         .frame(my_frame)
@@ -34,13 +38,19 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
         .show(egui_context.ctx_mut(), |ui| {
             ui.heading("This is a Header that does nothing useful");
             ui.horizontal(|ui| {
+                ui.label("Radius: ");
+                ui.add(radius_slider);
+            });
+            ui.horizontal(|ui| {
                 ui.label("balls: ");
-                ui.add(my_slider);
+                ui.add(ball_slider);
                 ui.add(some_label);
             });
             if ui.button("Click the magic-button").clicked() {
                 action_check.is_paused = !action_check.is_paused;
             }
             ui.label(ball_count);
+            ui.label("WARNING: there is no sanity-checking on ball-radius versus number of balls.");
+            ui.label("You can fill up the pit!");
         });
 }

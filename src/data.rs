@@ -1,15 +1,13 @@
 use bevy::prelude::Color;
 use bevy::math::Vec2;
 
-pub const CIRCLE_DELAY: f32 = 0.25;
+pub const CIRCLE_DELAY: f32 = 0.5;
 pub const BALLS_MAX: i32 = 100;
-pub const BALL_RADIUS: f32 = 10.0;
 pub const DAMP_FACTOR: f32 = 0.5;
 
 // Assorted screen data
 pub const HEIGHT: f32 = 950.0;
 pub const WIDTH: f32 = 1870.0;
-// const ASPECT_RATIO: f32 = WIDTH / HEIGHT;
 pub const BACKGROUND: Color = Color::rgb(0.50, 0.50, 1.0); // Purple
 
 pub const BLOCK_SIZE: f32 = 50.0;
@@ -41,5 +39,6 @@ pub(crate) const MY_PIT: BallPit = BallPit
 pub struct GuiData {
     pub some_name: String,
     pub total_balls: i32,
-    pub slider_value: i32,
+    pub radius_slider_value: f32,
+    pub ball_slider_value: i32,
 }

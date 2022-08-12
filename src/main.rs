@@ -36,7 +36,7 @@ fn main() {
         })
         .insert_resource(ClearColor(BACKGROUND))
 
-        .insert_resource(GuiData { some_name: "".to_string(), total_balls: 0, slider_value: 0 })
+        .insert_resource(GuiData { some_name: "".to_string(), total_balls: 0, radius_slider_value: 10.0, ball_slider_value: 0 })
         .insert_resource(SpritesMovable { is_active: true })
         .insert_resource(CircleTimer(Timer::from_seconds(CIRCLE_DELAY, true)))
         .insert_resource(BallsInGame { balls_added: 0, total_balls: BALLS_MAX })

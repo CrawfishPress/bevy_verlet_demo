@@ -23,6 +23,12 @@ Rust/Bevy version handled 500+ balls at 60 FPS, that I've tested.
  - has a simple control-panel using Egui widgets
    - slider to set ball-count
    - button to pause/start engine
+   - slider to set ball radius
+
+### Warning
+Now that ball-radius is adjustable, I'll comment that there's no sanity-checking
+on size of balls versus pit - it's possible to fill up the pit. Per the license,
+management is *not* responsible for any burned-up CPUs.
 
 ### TODO
  - figure out how to spawn balls on timer, without instant collisions

@@ -6,7 +6,7 @@ acceleration is reversed.
 use bevy::{prelude::*};
 use bevy::math::Vec2;
 
-use crate::data::{MY_PIT, DAMP_FACTOR};
+use crate::data::*;
 use crate::{GuiData, PitActive};
 
 #[allow(dead_code)]
@@ -21,11 +21,12 @@ pub struct VerletData {
     pub delta_t: f32,
 }
 
-pub fn solve_for_verlet(action_check: Res<PitActive>,
+pub fn solve_for_verlet(action_status: Res<PitActive>,
                         random_data: Res<GuiData>,
                         mut balls_qry: Query<(Entity, &mut VerletData, &mut Transform)>,
 ){
-    if action_check.is_paused { return; }
+    if action_status.is_paused { return; }
+    if action_status.game_status != GameState::Running { return; }
 
     let ball_radius = random_data.radius_slider_value;
 

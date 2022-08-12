@@ -4,17 +4,23 @@ like Command, is wildly different from a function that takes a *reference*.
 
 In the Python/Kivy version of this, I created a Vector2 class, but
 Bevy already has Vec2, which is stored in the sprite's Transform.
+
+Note: the Timer system is interesting, and a bit tricky. I made it
+infinitely-repeating, at half-second intervals (configurable),
+so every time it reaches a "finished" state, it runs the add-ball code,
+and then resets to unfinished/zero ticks.
+
+I keep thinking of removing KeyMover status from the Circles, but it
+can be entertaining, to totally spin them up. Has nothing to do with
+the Verlet Engine, but fun.
 */
 
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 use bevy::ecs::prelude::{Commands, Res};
 
-use crate::sprites::*;
+use crate::keymovers::*;
 use crate::verlet::*;
 use crate::data::*;
-
-#[derive(Component, Debug)]
-pub struct OneCircle;
 
 pub struct CircleTimer(pub Timer);
 
@@ -30,27 +36,31 @@ pub fn add_background(commands: &mut Commands,
 }
 
 pub fn add_many_circles(time: Res<Time>,
-                        action_check: Res<PitActive>,
                         mut commands: Commands,
                         mut meshes: ResMut<Assets<Mesh>>,
                         mut materials: ResMut<Assets<ColorMaterial>>,
                         mut timer: ResMut<CircleTimer>,
-                        mut balls_left: ResMut<BallsInGame>,
+
                         mut random_data: ResMut<GuiData>,
+                        mut action_status: ResMut<PitActive>,
 ){
-    if action_check.is_paused { return; }
+    if action_status.is_paused { return; }
+    if action_status.game_status != GameState::Running { return; }
+
     if timer.0.paused() { return; }
-    timer.0.tick(time.delta());
+
+    timer.0.tick(time.delta()); // Gotta feed a few deltas to the Timer
     if ! timer.0.finished() { return; }
 
     // TODO: make the x/y offset, random
     let ball_radius = random_data.radius_slider_value;
     add_a_circle(&mut commands, &mut meshes, &mut materials, ball_radius, 200.0, 200.0);
 
-    balls_left.balls_added += 1;
-    random_data.total_balls = balls_left.balls_added;
+    // Update GUI count, pause timer on all balls added
+    action_status.balls_added += 1;
+    random_data.total_balls = action_status.balls_added;
 
-    if balls_left.balls_added >= random_data.ball_slider_value {
+    if action_status.balls_added >= random_data.ball_slider_value {
         timer.0.pause();
     }
 }
@@ -78,7 +88,29 @@ pub fn add_a_circle(commands: &mut Commands,
             mesh: meshes.add(shape::Circle::new(ball_radius).into()).into(),
             material: materials.add(ColorMaterial::from(Color::WHITE)),
             ..default()})
-        .insert(OneCircle)
         .insert(KeyMover {is_movable: true})
+        .insert(OneCircle)
         .insert(verlet_data);
+}
+
+pub fn remove_circles(mut commands: Commands,
+                      action_status: Res<PitActive>,
+                      mut timer: ResMut<CircleTimer>,
+                      mut random_data: ResMut<GuiData>,
+                      mut balls_query: Query<Entity, With<OneCircle>>,
+) {
+    if action_status.game_status != GameState::Reset { return; }
+
+    // Remove all the balls from pit
+    for one_circle_id in balls_query.iter_mut() {
+        commands.entity(one_circle_id).despawn();
+    }
+
+    timer.0.unpause();
+
+    random_data.total_balls = 0;
+
+    // Reset all the variables in PitActive - by replacing it?
+    commands.remove_resource::<PitActive>();
+    commands.insert_resource(PitActive::default());
 }

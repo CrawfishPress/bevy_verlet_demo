@@ -6,7 +6,7 @@ use bevy::prelude::*;
 #[allow(unused_imports)]
 use bevy_egui::{egui, EguiContext, EguiPlugin};
 use egui::{Color32, Label};
-use crate::{PitActive, GuiData};
+use crate::{PitActive, GuiData, GameState};
 
 pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
                    mut action_check: ResMut<PitActive>,
@@ -28,8 +28,8 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
 
     // I can't believe this worked. See lessons.md
     let foo = &mut *random_data;
-    let radius_slider = egui::Slider::new(&mut foo.radius_slider_value, 10.0..=50.0).step_by(5.0);
-    let ball_slider = egui::Slider::new(&mut foo.ball_slider_value, 0..=500);
+    let radius_slider = egui::Slider::new(&mut foo.radius_slider_value, 5.0..=50.0).step_by(5.0);
+    let ball_slider = egui::Slider::new(&mut foo.ball_slider_value, 1..=500);
 
     egui::SidePanel::right("top panel?")
         .frame(my_frame)
@@ -48,9 +48,17 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
             });
             if ui.button("Click the magic-button").clicked() {
                 action_check.is_paused = !action_check.is_paused;
+
+                // Start the game
+                if action_check.is_paused == false && action_check.game_status == GameState::NotStarted {
+                    action_check.game_status = GameState::Running;
+                }
             }
             ui.label(ball_count);
             ui.label("WARNING: there is no sanity-checking on ball-radius versus number of balls.");
             ui.label("You can fill up the pit!");
+            if ui.button("RESET").clicked() {
+                action_check.game_status = action_check.game_status.cycle();
+            }
         });
 }

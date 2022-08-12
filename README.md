@@ -24,6 +24,8 @@ Rust/Bevy version handled 500+ balls at 60 FPS, that I've tested.
    - slider to set ball-count
    - button to pause/start engine
    - slider to set ball radius
+   - added a Reset button
+ - has basic Game State logic, cycled by GUI buttons
 
 ### Warning
 Now that ball-radius is adjustable, I'll comment that there's no sanity-checking

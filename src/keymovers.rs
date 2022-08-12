@@ -1,6 +1,4 @@
 /*
-Technically, the Sprites are in bitmaps.rs, this file just contains
-the motions-functions.
 
 */
 

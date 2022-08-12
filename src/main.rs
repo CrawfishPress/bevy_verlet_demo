@@ -9,14 +9,14 @@ use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 #[allow(unused_imports)]
 use bevy_egui::{egui, EguiContext, EguiPlugin};
 
-mod bitmaps;
-mod sprites;
+mod balls;
+mod keymovers;
 mod verlet;
 mod data;
 mod my_egui;
 
-use bitmaps::*;
-use sprites::*;
+use balls::*;
+use keymovers::*;
 use verlet::*;
 use data::*;
 use my_egui::*;
@@ -36,11 +36,10 @@ fn main() {
         })
         .insert_resource(ClearColor(BACKGROUND))
 
-        .insert_resource(GuiData { some_name: "".to_string(), total_balls: 0, radius_slider_value: 10.0, ball_slider_value: 0 })
+        .insert_resource(GuiData::default())
         .insert_resource(SpritesMovable { is_active: true })
         .insert_resource(CircleTimer(Timer::from_seconds(CIRCLE_DELAY, true)))
-        .insert_resource(BallsInGame { balls_added: 0, total_balls: BALLS_MAX })
-        .insert_resource(PitActive { is_paused: true })
+        .insert_resource(PitActive::default())
 
         .add_plugins(DefaultPlugins)
         .add_plugin(EguiPlugin)
@@ -48,9 +47,11 @@ fn main() {
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
 
         .add_startup_system(setup_sprites)
+
+        .add_system(bevy::window::close_on_esc)
         .add_system(do_ui_setup)
         .add_system(add_many_circles)
-        .add_system(bevy::window::close_on_esc)
+        .add_system(remove_circles)
         .add_system(do_movement_input)
         .add_system(solve_for_verlet)
         .run();

@@ -15,8 +15,10 @@ it was only able to handle 100-150 balls without dropping framerate. The
 Rust/Bevy version handled 500+ balls at 60 FPS, that I've tested.
 
 ### Currently
- - one circular constraint enabled
- - multi-ball collisions working
+ - Verlet Engine
+   - multi-ball collisions working
+   - one circular constraint enabled
+   - gravity working its magic
  - ball-release on timer (fairly slowly, or incoming balls smash previous ball)
  - collision-damping funky, some popcorn-effects at times
  - at 500 balls, holding at 60 FPS - and I haven't added the pre-collision filtering
@@ -26,6 +28,7 @@ Rust/Bevy version handled 500+ balls at 60 FPS, that I've tested.
    - slider to set ball radius
    - added a Reset button
  - has basic Game State logic, cycled by GUI buttons
+ - upscaled GUI widgets, larger/more readable
 
 ### Warning
 Now that ball-radius is adjustable, I'll comment that there's no sanity-checking
@@ -33,6 +36,7 @@ on size of balls versus pit - it's possible to fill up the pit. Per the license,
 management is *not* responsible for any burned-up CPUs.
 
 ### TODO
+ - add pre-collision filtering - right now it's O**2 for collision-checking of balls
  - figure out how to spawn balls on timer, without instant collisions
  - experiment with dampening, to get less "dynamic" collisions
  - change balls to have different radii

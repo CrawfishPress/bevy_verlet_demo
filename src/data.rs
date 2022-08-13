@@ -86,8 +86,8 @@ impl Default for GuiData {
         GuiData {
             some_name: "".to_string(),
             total_balls: 0,
-            radius_slider_value: 10.0,
-            ball_slider_value: 0
+            radius_slider_value: 15.0,
+            ball_slider_value: 20
         }
     }
 }

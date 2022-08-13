@@ -1,10 +1,12 @@
 /*
 Experiments in learning egui.
 https://docs.rs/egui/latest/egui/
+
+This Does nothing? How does Frame interact?
+ui.style_mut().spacing.window_margin = Margin {left: 100.0, right: 100.0, top: 50.0, bottom: 50.0};
 */
 
 use bevy::prelude::*;
-#[allow(unused_imports)]
 use bevy_egui::*;
 use egui::*;
 use crate::{PitActive, GuiData, GameState};
@@ -15,7 +17,7 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
 ) {
     let my_frame = egui::containers::Frame {
         outer_margin: Default::default(),
-        inner_margin: egui::style::Margin { left: 10.0, right: 10.0, top: 10.0, bottom: 10.0 },
+        inner_margin: egui::style::Margin { left: 20.0, right: 20.0, top: 20.0, bottom: 20.0 },
         rounding: Default::default(),
         // shadow: epaint::Shadow { extrusion: 1.0, color: Color32::YELLOW },
         shadow: Default::default(),
@@ -68,24 +70,30 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
         .min_width(700.0)
         // .resizable(true)  // Only works if there's a resizable element inside?
         .show(egui_context.ctx_mut(), |ui| {
+            ui.style_mut().spacing.slider_width = 500.0;
+            ui.style_mut().spacing.item_spacing = egui::Vec2 {x: 10.0, y: 20.0};
+
             ui.label(big_text_lbl_1);
+
             ui.horizontal(|ui| {
                 ui.label(big_text_btn_5);
-                ui.add_sized([100.0, 20.0], radius_slider);
+                ui.add_sized([300.0, 30.0], radius_slider);
             });
             ui.horizontal(|ui| {
                 ui.label(big_text_btn_7);
                 ui.add(ball_slider);
             });
+
             ui.add(Label::new(big_text_lbl_7));
+
             if ui.button(big_text_btn_1).clicked() {
                 action_check.is_paused = !action_check.is_paused;
-
                 // Start the game
                 if action_check.is_paused == false && action_check.game_status == GameState::NotStarted {
                     action_check.game_status = GameState::Running;
                 }
             }
+
             ui.label(big_text_lbl_5);
             ui.add(Label::new(big_text_lbl_3));
 

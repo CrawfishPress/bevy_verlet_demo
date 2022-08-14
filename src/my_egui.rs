@@ -72,7 +72,7 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
         .color(Color32::WHITE).font(FontId::proportional(20.0));
 
     let big_text_lbl_11 = RichText::new("BROWSER? Hit <ctrl>- a few times to shrink, while we work on it.")
-        .color(Color32::WHITE).font(FontId::proportional(20.0));
+        .color(Color32::WHITE).font(FontId::proportional(40.0));
 
     egui::SidePanel::right("top panel?")
         .frame(my_frame)

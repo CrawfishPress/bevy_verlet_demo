@@ -21,14 +21,15 @@ Rust/Bevy version handled 500+ balls at 60 FPS, that I've tested.
    - gravity working its magic
  - ball-release on timer (fairly slowly, or incoming balls smash previous ball)
  - collision-damping funky, some popcorn-effects at times
- - at 500 balls, holding at 60 FPS - and I haven't added the pre-collision filtering
+ - at 500 balls, holding at 60 FPS - I added some pre-collision filtering, anyway
+   - the FPS can handle more than 500 balls, but there's some other weirdness with that many, alas
  - has a simple control-panel using Egui widgets
    - sliders, to set ball-count/ball-radius/ball-release delay
    - buttons, to pause/reset
  - has basic Game State logic, cycled by GUI buttons
  - upscaled GUI widgets, larger/more readable
  - added WASM support, so it runs in the browser
-   - app too large, have to hit <CTRL>- a few times to see it
+   - app too large, have to hit < CTRL>- a few times to see it
 
 ### Warning
 Now that ball-radius is adjustable, I'll comment that there's no sanity-checking
@@ -37,7 +38,6 @@ management is *not* responsible for any burned-up CPUs.
 
 ### TODO
  - make app resize for browser-window
- - add pre-collision filtering - right now it's O**2 for collision-checking of balls
  - change collision-logic to handle balls of different radius
  - change balls to have different radii (sort done, the slider can be changed mid-release!)
  - figure out how to spawn balls on timer, without instant collisions

@@ -4,6 +4,8 @@ Basic example of Verlet equations-of-motion, in Rust/Bevy
 
 use bevy::{prelude::*, window::WindowMode, sprite::MaterialMesh2dBundle};
 use bevy::ecs::prelude::{Commands, Res};
+
+#[allow(unused_imports)]
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 
 #[allow(unused_imports)]
@@ -43,8 +45,8 @@ fn main() {
 
         .add_plugins(DefaultPlugins)
         .add_plugin(EguiPlugin)
-        .add_plugin(LogDiagnosticsPlugin::default())
-        .add_plugin(FrameTimeDiagnosticsPlugin::default())
+        // .add_plugin(LogDiagnosticsPlugin::default())
+        // .add_plugin(FrameTimeDiagnosticsPlugin::default())
 
         .add_startup_system(setup_sprites)
 

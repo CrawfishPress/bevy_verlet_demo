@@ -29,6 +29,7 @@ pub fn solve_for_verlet(action_status: Res<PitActive>,
     if action_status.game_status != GameState::Running { return; }
 
     let ball_radius = random_data.radius_slider_value;
+    let pre_collision_distance = ball_radius * 2.1;
 
     for (_entity_id, mut verlet_data, mut entity_pos) in balls_qry.iter_mut() {
         // apply_gravity(verlet_data, entity_pos);  // No hope that this would ever work. See lessons.md
@@ -43,6 +44,12 @@ pub fn solve_for_verlet(action_status: Res<PitActive>,
     for ball_one in 0..ball_count {
         for ball_two in 0..ball_count {
             if balls[ball_one].0 == balls[ball_two].0 { continue }
+
+            // Some fast pre-collision checking, to speed things up slightly
+            let pre_x_check = (balls[ball_one].2.translation.x - balls[ball_two].2.translation.x).abs();
+            let pre_y_check = (balls[ball_one].2.translation.y - balls[ball_two].2.translation.y).abs();
+            if (pre_x_check > pre_collision_distance) || (pre_y_check > pre_collision_distance) { continue; }
+
             let maybe_vec = check_for_collision(&balls[ball_one], &balls[ball_two], ball_radius);
             if maybe_vec == None {continue};
             let new_vec = maybe_vec.unwrap();

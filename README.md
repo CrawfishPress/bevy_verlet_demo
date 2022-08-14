@@ -24,9 +24,10 @@ Rust/Bevy version handled 500+ balls at 60 FPS, that I've tested.
  - at 500 balls, holding at 60 FPS - and I haven't added the pre-collision filtering
  - has a simple control-panel using Egui widgets
    - slider to set ball-count
-   - button to pause/start engine
    - slider to set ball radius
-   - added a Reset button
+   - slider to set ball-release delay
+   - pause-button
+   - reset-button
  - has basic Game State logic, cycled by GUI buttons
  - upscaled GUI widgets, larger/more readable
 
@@ -37,9 +38,10 @@ management is *not* responsible for any burned-up CPUs.
 
 ### TODO
  - add pre-collision filtering - right now it's O**2 for collision-checking of balls
+ - change collision-logic to handle balls of different radius
+ - change balls to have different radii (sort done, the slider can be changed mid-release!)
  - figure out how to spawn balls on timer, without instant collisions
  - experiment with dampening, to get less "dynamic" collisions
- - change balls to have different radii
  - add static balls for pinball-effect
  - add links for some chaining
  - move more parameters to control-panel

@@ -13,8 +13,17 @@ and then resets to unfinished/zero ticks.
 I keep thinking of removing KeyMover status from the Circles, but it
 can be entertaining, to totally spin them up. Has nothing to do with
 the Verlet Engine, but fun.
+
+Note: when I added release-delay to a Control-panel slider, I realized
+that it can be changed, as the balls are dropping. More importantly, I
+then realized that the other values, like ball-count and *radius*, can
+also be changed while the balls are being released. I thought about
+making these variables static for the duration, but then I decided,
+"what the heck..." Not like it's hurting anything. (although the
+collision-logic does need to be changed for different radii.
 */
 
+use std::time::Duration;
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 use bevy::ecs::prelude::{Commands, Res};
 
@@ -48,6 +57,9 @@ pub fn add_many_circles(time: Res<Time>,
     if action_status.game_status != GameState::Running { return; }
 
     if timer.0.paused() { return; }
+
+    // TODO: do this somewhere else - see Comments
+    timer.0.set_duration(Duration::from_millis(random_data.circle_delay));
 
     timer.0.tick(time.delta()); // Gotta feed a few deltas to the Timer
     if ! timer.0.finished() { return; }

@@ -38,7 +38,7 @@ fn main() {
 
         .insert_resource(GuiData::default())
         .insert_resource(SpritesMovable { is_active: true })
-        .insert_resource(CircleTimer(Timer::from_seconds(CIRCLE_DELAY, true)))
+        .insert_resource(CircleTimer(Timer::from_seconds(CIRCLE_DELAY_MILLIS as f32 / 1000.0, true)))
         .insert_resource(PitActive::default())
 
         .add_plugins(DefaultPlugins)

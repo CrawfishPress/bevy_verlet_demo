@@ -11,7 +11,9 @@ is slightly more clear than
 use bevy::prelude::*;
 use bevy::math::Vec2;
 
-pub const CIRCLE_DELAY: f32 = 0.5;
+pub const CIRCLE_DELAY_MILLIS: u64 = 300;
+pub const DEFAULT_CIRCLE_RADIUS: f32 = 15.0;
+pub const DEFAULT_CIRCLE_COUNT: i32 = 20;
 pub const DAMP_FACTOR: f32 = 0.5;
 
 // Assorted screen data
@@ -79,6 +81,7 @@ pub struct GuiData {
     pub total_balls: i32,
     pub radius_slider_value: f32,
     pub ball_slider_value: i32,
+    pub circle_delay: u64,
 }
 
 impl Default for GuiData {
@@ -86,8 +89,9 @@ impl Default for GuiData {
         GuiData {
             some_name: "".to_string(),
             total_balls: 0,
-            radius_slider_value: 15.0,
-            ball_slider_value: 20
+            radius_slider_value: DEFAULT_CIRCLE_RADIUS,
+            ball_slider_value: DEFAULT_CIRCLE_COUNT,
+            circle_delay: CIRCLE_DELAY_MILLIS,
         }
     }
 }

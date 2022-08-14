@@ -32,6 +32,7 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
     let foo = &mut *random_data;
     let radius_slider = egui::Slider::new(&mut foo.radius_slider_value, 5.0..=50.0).step_by(5.0);
     let ball_slider = egui::Slider::new(&mut foo.ball_slider_value, 1..=500);
+    let timer_slider = egui::Slider::new(&mut foo.circle_delay, 100..=1000).step_by(100 as f64);
 
     let pause_string: String;
     if action_check.is_paused {
@@ -50,6 +51,9 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
         .color(Color32::GREEN).background_color(Color32::BLACK).font(FontId::proportional(20.0)).size(20.0);
     let big_text_btn_7 = RichText::new("Balls: ")
         .color(Color32::GREEN).background_color(Color32::BLACK).font(FontId::proportional(20.0)).size(20.0);
+    let big_text_btn_9 = RichText::new("Release-Delay: ")
+        .color(Color32::GREEN).background_color(Color32::BLACK).font(FontId::proportional(20.0)).size(20.0);
+
 
     let big_text_lbl_1 = RichText::new("Verlet Equations-of-Motion Demo, in Rust/Bevy")
         .color(Color32::WHITE).font(FontId::proportional(20.0));
@@ -64,27 +68,38 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
     let big_text_lbl_7 = RichText::new("(I think you can also click the boxes, to enter a number)")
         .color(Color32::BLACK).background_color(Color32::GRAY).font(FontId::proportional(20.0)).size(25.0);
 
+    let big_text_lbl_9 = RichText::new("delay in milliseconds - low delay may cause pop-corning")
+        .color(Color32::WHITE).font(FontId::proportional(20.0));
 
     egui::SidePanel::right("top panel?")
         .frame(my_frame)
         .min_width(700.0)
         // .resizable(true)  // Only works if there's a resizable element inside?
         .show(egui_context.ctx_mut(), |ui| {
-            ui.style_mut().spacing.slider_width = 500.0;
             ui.style_mut().spacing.item_spacing = egui::Vec2 {x: 10.0, y: 20.0};
 
             ui.label(big_text_lbl_1);
 
-            ui.horizontal(|ui| {
+            ui.horizontal(|ui| {  // Radius-slider
+                ui.style_mut().spacing.slider_width = 200.0;
                 ui.label(big_text_btn_5);
                 ui.add_sized([300.0, 30.0], radius_slider);
             });
-            ui.horizontal(|ui| {
+
+            ui.horizontal(|ui| { // Ball-count slider
+                ui.style_mut().spacing.slider_width = 500.0;
                 ui.label(big_text_btn_7);
                 ui.add(ball_slider);
             });
 
             ui.add(Label::new(big_text_lbl_7));
+
+            ui.horizontal(|ui| { // Release-delay slider
+                ui.style_mut().spacing.slider_width = 200.0;
+                ui.label(big_text_btn_9);
+                ui.add(timer_slider);
+                ui.label(big_text_lbl_9);
+            });
 
             if ui.button(big_text_btn_1).clicked() {
                 action_check.is_paused = !action_check.is_paused;

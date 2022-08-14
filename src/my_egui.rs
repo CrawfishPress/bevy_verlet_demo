@@ -71,6 +71,9 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
     let big_text_lbl_9 = RichText::new("delay in milliseconds - low delay may cause pop-corning")
         .color(Color32::WHITE).font(FontId::proportional(20.0));
 
+    let big_text_lbl_11 = RichText::new("BROWSER? Hit <ctrl>- a few times to shrink, while we work on it.")
+        .color(Color32::WHITE).font(FontId::proportional(20.0));
+
     egui::SidePanel::right("top panel?")
         .frame(my_frame)
         .min_width(700.0)
@@ -115,5 +118,6 @@ pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
             if ui.button(big_text_btn_3).clicked() {
                 action_check.game_status = action_check.game_status.cycle();
             }
+            ui.label(big_text_lbl_11);
         });
 }

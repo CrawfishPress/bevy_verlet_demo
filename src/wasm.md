@@ -13,7 +13,16 @@ Added this to `~/.cargo/config.toml`
     [target.wasm32-unknown-unknown]
     runner = "wasm-server-runner"
 
-Building:
+
+### Static files
+Note: in order for Django to serve the static files (as opposed to the
+build-in Python webserver used for testing), they must be under /static:
+
+    add_background(&mut commands, &asset_server, "circle.png");  # For pure Rust/WASM
+
+    add_background(&mut commands, &asset_server, "/static/web/assets/circle.png");
+
+### Building:
 
     cargo build --release --target wasm32-unknown-unknown
 

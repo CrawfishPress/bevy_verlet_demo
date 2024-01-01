@@ -68,7 +68,7 @@ fn setup_sprites(mut commands: Commands,
     commands  // Camera
         .spawn_bundle(Camera2dBundle::default());
 
-    add_background(&mut commands, &asset_server, "circle.png");
+    add_background(&mut commands, &asset_server, "/static/web/assets/circle.png");
 
     commands // Center Pixel for Calibration
         .spawn_bundle(MaterialMesh2dBundle {

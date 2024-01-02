@@ -6,15 +6,16 @@ Inspired by the excellent video:
 - (How to program a basic Physic Engine by Pezzza's Work)
 
 This is a quick demo of the basic Verlet equations for object-motion,
-implemented in Rust + Bevy. (Uses Rust 1.62.1/Bevy 0.8.0). Now also
-integrates Egui, an immediate-mode GUI with bindings for Bevy, to add
-some widgets.
+implemented in Rust + Bevy. Now also integrates Egui, an immediate-mode GUI with 
+bindings for Bevy, to add some widgets.
 
 Note - I did another version of this in Python/Kivy, but not surprisingly,
 it was only able to handle 100-150 balls without dropping framerate. The
 Rust/Bevy version handled 500+ balls at 60 FPS, that I've tested.
 
 ### Currently
+ - Bevy 0.12/Rust 1.72.1
+ - egui 0.24/bevy-egui 0.24
  - Verlet Engine
    - multi-ball collisions working
    - one circular constraint enabled
@@ -30,6 +31,7 @@ Rust/Bevy version handled 500+ balls at 60 FPS, that I've tested.
  - upscaled GUI widgets, larger/more readable
  - added WASM support, so it runs in the browser
    - app too large, have to hit < CTRL>- a few times to see it
+ - WASM requires modifying one line - still working on a general static-asset strategy
 
 ### Warning
 Now that ball-radius is adjustable, I'll comment that there's no sanity-checking

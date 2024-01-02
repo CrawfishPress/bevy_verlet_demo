@@ -31,14 +31,15 @@ use crate::keymovers::*;
 use crate::verlet::*;
 use crate::data::*;
 
+#[derive(Resource)]
 pub struct CircleTimer(pub Timer);
 
 pub fn add_background(commands: &mut Commands,
                       asset_server: &Res<AssetServer>,
-                      some_bitmap: &str,
+                      some_bitmap: &'static str,
 ){
     commands  // Background Map
-        .spawn_bundle(SpriteBundle {
+        .spawn(SpriteBundle {
             transform: Transform::from_xyz(0.0, 0.0, 0.0),
             texture: asset_server.load(some_bitmap),
             ..default()});
@@ -95,7 +96,7 @@ pub fn add_a_circle(commands: &mut Commands,
     };
 
     commands // I'll have to Circle back...
-        .spawn_bundle(MaterialMesh2dBundle {
+        .spawn(MaterialMesh2dBundle {
             transform: Transform::from_translation(circle_vec3),
             mesh: meshes.add(shape::Circle::new(ball_radius).into()).into(),
             material: materials.add(ColorMaterial::from(Color::WHITE)),

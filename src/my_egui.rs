@@ -9,9 +9,10 @@ ui.style_mut().spacing.window_margin = Margin {left: 100.0, right: 100.0, top: 5
 use bevy::prelude::*;
 use bevy_egui::*;
 use egui::*;
+use egui::Label;
 use crate::{PitActive, GuiData, GameState};
 
-pub fn do_ui_setup(mut egui_context: ResMut<EguiContext>,
+pub fn do_ui_setup(mut egui_context: EguiContexts,
                    mut action_check: ResMut<PitActive>,
                    mut random_data: ResMut<GuiData>,
 ) {

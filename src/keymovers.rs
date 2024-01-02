@@ -8,10 +8,12 @@ use bevy::ecs::prelude::{Res};
 // fn print_type_of<T>(_: &T) {print!("{}", std::any::type_name::<T>())} // Unstable.
 
 #[derive(Component)]
+#[derive(Resource)]
 pub struct KeyMover {
     pub is_movable: bool
 }
 
+#[derive(Resource)]
 pub struct SpritesMovable {
     pub is_active: bool
 }
@@ -23,7 +25,7 @@ pub fn do_movement_input(keyboard_input: Res<Input<KeyCode>>,
     if !move_active.is_active {return;}
 
     // For some reason, left-CTRL key not registering - maybe Linux is eating it?
-    if keyboard_input.any_pressed([KeyCode::LControl, KeyCode::RControl, KeyCode::LAlt, KeyCode::RAlt]) {
+    if keyboard_input.any_pressed([KeyCode::ControlLeft, KeyCode::ControlRight, KeyCode::AltLeft, KeyCode::AltRight]) {
         println!("*** keys pressed: {:?}", keyboard_input);
         return;}
 

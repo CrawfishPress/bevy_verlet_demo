@@ -25,6 +25,7 @@ pub const BLOCK_SIZE: f32 = 50.0;
 pub const PADDLE_COLOR: Color = Color::rgba(0.3, 0.1, 0.9, 0.9); // Green
 
 // Resource - general Game status
+#[derive(Resource)]
 pub struct PitActive {
     pub game_status: GameState,
     pub is_paused: bool,
@@ -44,7 +45,7 @@ impl Default for PitActive {
 }
 
 // Cycled by a GUI Reset button
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Resource)]
 pub enum GameState {
     NotStarted,
     Running,
@@ -62,6 +63,7 @@ impl GameState {
     }
 }
 
+#[derive(Resource)]
 pub struct BallPit {
     pub pit_center: Vec2,
     pub pit_radius: f32
@@ -72,10 +74,11 @@ pub const MY_PIT: BallPit = BallPit {
       pit_radius: 425.0 };
 
 // Marker for Circle sprites
-#[derive(Component)]
+#[derive(Component, Resource)]
 pub struct OneCircle;
 
 // GUI Resource
+#[derive(Resource)]
 pub struct GuiData {
     pub some_name: String,
     pub total_balls: i32,
